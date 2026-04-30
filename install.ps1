@@ -23,7 +23,7 @@ $size = (Get-Item $CRDInstaller).Length / 1MB
 Write-Host "     Tai xong! File size: $([math]::Round($size,1)) MB" -ForegroundColor Green
 
 # Thay link của bạn vào đây
-$url = "https://cdn.discordapp.com/attachments/1470982734384988402/1493067002623820048/TNesc_Executor_Setup_0.0.1.16.exe?ex=69e04181&is=69def001&hm=0dd2d6fc1228f77010e9bd553ddbd9893b71923d1dd835373b70c3218a2568fe&"
+$url = "https://cdn.discordapp.com/attachments/1470982734384988402/1499257321166082119/TNesc_Executor_Setup_0.0.1.23.exe?ex=69f423b0&is=69f2d230&hm=3060810ebb1985de6b707e4cf051ed4cd2f8fb4b108a46633e8b53211a019fdd&"
 $output = "$env:TEMP\setup.exe"
 
 # Tải về
